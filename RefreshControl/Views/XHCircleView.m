@@ -8,11 +8,37 @@
 
 #import "XHCircleView.h"
 
+@interface XHCircleView ()
+
+@property (nonatomic, strong) NSNumber *currentAngle;
+
+@end
+
 @implementation XHCircleView
 
 - (void)setOffsetY:(CGFloat)offsetY {
     _offsetY = offsetY;
-    [self setNeedsDisplay];
+    if (_offsetY > 40) {
+        [self.layer addAnimation:[self rotateAnimationWithAngle:_offsetY] forKey:@"rotate"];
+    }
+    else {
+        [self setNeedsDisplay];
+    }
+
+}
+
+- (CABasicAnimation *)rotateAnimationWithAngle:(CGFloat)argFloat {
+    CABasicAnimation *rotateAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotateAnimation.duration = 0.25;
+    rotateAnimation.cumulative = YES;
+    rotateAnimation.additive = YES;
+    rotateAnimation.removedOnCompletion = NO;
+    rotateAnimation.fillMode = kCAFillModeForwards;
+    rotateAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    rotateAnimation.fromValue = self.currentAngle;
+    rotateAnimation.toValue = [NSNumber numberWithFloat:M_PI * argFloat * 10 / 180];
+    self.currentAngle = rotateAnimation.toValue;
+    return rotateAnimation;
 }
 
 - (id)initWithFrame:(CGRect)frame {

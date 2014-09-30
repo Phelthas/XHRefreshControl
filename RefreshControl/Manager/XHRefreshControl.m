@@ -564,12 +564,19 @@ typedef NS_ENUM(NSInteger, XHRefreshState) {
                         switch (self.pullDownRefreshViewType) {
                             case XHPullDownRefreshViewTypeCircle: {
                                 if (!self.pullDownRefreshing) {
+                                    
+//                                    test
+                                    pullDownOffset = ABS(self.scrollView.contentOffset.y + [self getAdaptorHeight]) - kXHRefreshCircleViewHeight;
+//                                    NSLog(@"timeOffset is %f",pullDownOffset);
+                                    
                                     self.refreshCircleContainerView.circleView.offsetY = pullDownOffset;
                                 }
                                 break;
                             }
                             case XHPullDownRefreshViewTypeActivityIndicator: {
                                 CGFloat timeOffset = pullDownOffset / 36.0;
+
+                                
                                 self.refreshActivityIndicatorContainerView.activityIndicatorView.timeOffset = timeOffset;
                                 break;
                             }

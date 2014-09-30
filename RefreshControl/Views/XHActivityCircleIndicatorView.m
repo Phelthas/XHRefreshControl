@@ -95,16 +95,31 @@ static NSString* const kXHRotationAnimation = @"XHRotationAnimation";
         return;
     }
     
-    CGFloat showingOffset = timeOffset * 12.0 - 1;
-    
-    for (int i = 0; i < 12; i ++) {
-        CALayer *layer = self.standbyLayersArray[i];
-        if (i < showingOffset) {
-            layer.hidden = NO;
-        } else {
-            layer.hidden = YES;
+    if (timeOffset < 1.0) {
+        CGFloat showingOffset = timeOffset * 12.0 - 1;
+        
+        for (int i = 0; i < 12; i ++) {
+            CALayer *layer = self.standbyLayersArray[i];
+            if (i < showingOffset) {
+                layer.hidden = NO;
+            } else {
+                layer.hidden = YES;
+            }
         }
     }
+    else {
+        int showingOffset = (int)ceil(timeOffset * 12.0) % 12  - 1;
+        for (int i = 0; i < 12; i ++) {
+            CALayer *layer = self.standbyLayersArray[i];
+            if (i == showingOffset) {
+                layer.hidden = YES;
+            } else {
+                layer.hidden = NO;
+            }
+        }
+    }
+    
+    
 }
 
 - (void)beginRefreshing {
